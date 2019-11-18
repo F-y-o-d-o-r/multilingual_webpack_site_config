@@ -1,9 +1,11 @@
 doctype html
-head
+html(lang=htmlWebpackPlugin.options.lang)
+block head
   title=htmlWebpackPlugin.options.title
-  meta(charset='UTF-8')
+  description=htmlWebpackPlugin.options.description
+  meta(http-equiv='Content-Type' content='text/html; charset=utf-8')
+  meta(name='description' content='Сайт об HTML и создании сайтов')
 block body
-  h1 INDEX page
-  #container.col
-    p You are amazing
-    p Pug is a terse and simple templating language.
+  h1=htmlWebpackPlugin.options.title
+  h1=htmlWebpackPlugin.options.lang
+  h1=htmlWebpackPlugin.options.description

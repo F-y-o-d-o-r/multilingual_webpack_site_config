@@ -1,19 +1,25 @@
 const path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const PATHS = {
+  src: path.resolve(process.cwd(), "src"),
+  dist: path.resolve(process.cwd(), "dist")
+};
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
-  entry: [
-    './src/js/index.js',
-  ],
+  entry: {
+    index: `${PATHS.src}/js/index.js`,
+    test: `${PATHS.src}/js/test.js`
+  },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'js/index_bundle.js'
+    path: `${PATHS.src}/dist`,
+    filename: 'js/[name].js'
   },
   devtool: "source-map",
   module: {
     rules: [{
       test: /\.js$/,
-      include: path.resolve(__dirname, 'src/js'),
+      include: `${PATHS.src}/js`,
       use: {
         loader: 'babel-loader',
         options: {
@@ -38,6 +44,8 @@ module.exports = {
       title: "Index page - en",
       description: "Index page - en",
       canonical: "https://websitename/",
+      chunks: ['index', 'test'],
+      // css: [ "main.css" ],
     }),
     new HtmlWebpackPlugin({
       filename: 'ru/index.html',
