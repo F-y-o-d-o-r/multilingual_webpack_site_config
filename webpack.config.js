@@ -21,18 +21,39 @@ module.exports = {
         }
       }
     },
+      {
+        test: /\.pug$/,
+        loader: "pug-loader",
+        options: {
+
+        }
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'src/pug/index.pug',
-      title: 'Index page',
+      template: 'src/pug/en/index.pug',
+      lang: "en",
+      title: "Index page - en",
+      description: "Index page - en",
+      canonical: "https://websitename/",
     }),
     new HtmlWebpackPlugin({
-      filename: 'test.html',
-      template: 'src/pug/test.pug',
-      title: 'Test page',
+      filename: 'ru/index.html',
+      template: 'src/pug/ru/index.pug',
+      lang: "ru",
+      title: "Index page - ru",
+      description: "Index page - ru",
+      canonical: "https://websitename/ru",
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'ua/index.html',
+      template: 'src/pug/ua/index.pug',
+      lang: "ua",
+      title: "Index page - ua",
+      description: "Index page - ua",
+      canonical: "https://websitename/ua",
     })
   ]
 };
