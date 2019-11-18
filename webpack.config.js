@@ -37,6 +37,22 @@ module.exports = (env, argv) => {
             pretty: devMode
           }
         },
+        {
+          test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+          exclude: [
+
+          ],
+          include: [
+
+          ],
+          use: [{
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: '/fonts/'
+            }
+          }]
+        },
       ],
     },
     plugins: [
