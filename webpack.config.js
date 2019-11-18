@@ -4,6 +4,7 @@ const PATHS = {
   dist: path.resolve(process.cwd(), "dist")
 };
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 
 module.exports = (env, argv) => {
@@ -39,6 +40,11 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
+      new CleanWebpackPlugin({
+        cleanOnceBeforeBuildPatterns: [
+          `${PATHS.dist}`,
+        ]
+      }),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'src/pug/en/index.pug',
