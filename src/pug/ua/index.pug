@@ -2,3 +2,5 @@ extends ../../template
 
 block main
   h1 index
+  +addJson("/pages/index", "index")
+  h2=data.index.h1

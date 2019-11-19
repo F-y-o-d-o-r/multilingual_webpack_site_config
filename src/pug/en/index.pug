@@ -3,3 +3,5 @@ extends ../../template
 block main
   h1 index
   img(src=require("../../img/star.png"))
+  +addJson("/pages/index", "index")
+  h2=data.index.h1

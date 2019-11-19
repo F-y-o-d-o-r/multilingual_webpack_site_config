@@ -1,3 +1,8 @@
+include pug/_mixins/includeJson
+
+- data = {}
+// - data.index= require("../../data/en/pages/index")
+
 doctype html
 html(lang= htmlWebpackPlugin.options.lang)
   head
@@ -13,3 +18,4 @@ html(lang= htmlWebpackPlugin.options.lang)
     h1=htmlWebpackPlugin.options.lang
     h1=htmlWebpackPlugin.options.description
     block main
+      //+addJson("./index", "index")
