@@ -4,6 +4,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const SpriteLoaderPlugin = require("svg-sprite-loader/plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+// https://github.com/Klathmon/imagemin-webpack-plugin //TODO
+
 const path = require('path');
 const PATHS = {
   src: path.resolve(process.cwd(), "src"),
