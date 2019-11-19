@@ -3,8 +3,12 @@ const PATHS = {
   src: path.resolve(process.cwd(), "src"),
   dist: path.resolve(process.cwd(), "dist")
 };
+// Try the environment variable, otherwise use root
+const ASSET_PATH = process.env.ASSET_PATH || '/';
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 
 module.exports = (env, argv) => {
@@ -16,20 +20,21 @@ module.exports = (env, argv) => {
     },
     output: {
       path: `${PATHS.dist}`,
-      filename: 'js/[name].js'
+      filename: devMode ? "js/[name].js" : "js/[name].min.js?[contenthash]",
     },
     devtool: devMode ? "source-map" : "",
     module: {
-      rules: [{
-        test: /\.js$/,
-        include: `${PATHS.src}/js`,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
+      rules: [
+        {
+          test: /\.js$/,
+          include: `${PATHS.src}/js`,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            }
           }
-        }
-      },
+        },
         {
           test: /\.pug$/,
           loader: "pug-loader",
@@ -39,23 +44,78 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-          exclude: [
-
-          ],
-          include: [
-
-          ],
-          use: [{
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: '/fonts/'
+          exclude: /node_modules/,
+          include: `${PATHS.src}/fonts/`,
+          use: [
+            {
+              loader: "file-loader",
+              options: {
+                name: "[name].[ext]",
+                outputPath: `/fonts/`,
+                publicPath: '../',
+              }
             }
-          }]
+          ]
         },
+        {
+          test: /\.css$/,
+          use: [
+            'style-loader',
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: true,
+                config: {
+                  path: `${PATHS.src}/js/postcss.config.js`
+                }
+              }
+            }
+          ]
+        },
+        {
+          test: /\.sass$/,
+          use: [
+            'style-loader',
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: true,
+                config: {
+                  path: `${PATHS.src}/js/postcss.config.js`
+                }
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+                sassOptions: {
+                  includePaths: [''],
+                },
+              }
+            }
+          ]
+        }
       ],
     },
     plugins: [
+      new MiniCssExtractPlugin({
+        filename: devMode ? "css/[name].css" : "css/[name].min.css?[contenthash]"
+      }),
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: [
           `${PATHS.dist}`,
@@ -69,6 +129,7 @@ module.exports = (env, argv) => {
         description: "Index page - en",
         canonical: "https://websitename/",
         chunks: ['index', 'test'],
+        body: 'index'
         // css: [ "main.css" ],
       }),
       new HtmlWebpackPlugin({
