@@ -1,15 +1,12 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 const path = require('path');
 const PATHS = {
   src: path.resolve(process.cwd(), "src"),
   dist: path.resolve(process.cwd(), "dist")
 };
-// Try the environment variable, otherwise use root
-const ASSET_PATH = process.env.ASSET_PATH || '/';
-
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== "production";
@@ -53,6 +50,19 @@ module.exports = (env, argv) => {
                 name: "[name].[ext]",
                 outputPath: `/fonts/`,
                 publicPath: '../',
+              }
+            }
+          ]
+        },
+        {
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          include: `${PATHS.src}/img/`,
+          use: [
+            {
+              loader: "file-loader",
+              options: {
+                name: "[name].[ext]",
+                outputPath: `img/`,
               }
             }
           ]
