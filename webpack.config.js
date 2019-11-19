@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const SpriteLoaderPlugin = require("svg-sprite-loader/plugin");
 
 const path = require('path');
 const PATHS = {
@@ -119,6 +120,13 @@ module.exports = (env, argv) => {
               }
             }
           ]
+        },
+        {
+          test: /\.svg$/,
+          use: [
+            'svg-sprite-loader',
+            'svgo-loader'
+          ]
         }
       ],
     },
@@ -130,6 +138,9 @@ module.exports = (env, argv) => {
         cleanOnceBeforeBuildPatterns: [
           `${PATHS.dist}`,
         ]
+      }),
+      new SpriteLoaderPlugin({
+        plainSprite: true
       }),
       new HtmlWebpackPlugin({
         filename: 'index.html',
