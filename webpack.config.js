@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const SpriteLoaderPlugin = require("svg-sprite-loader/plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const path = require('path');
 const PATHS = {
@@ -131,6 +132,11 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
+      new BundleAnalyzerPlugin({
+        analyzerMode: devMode ? "server" : "static", //"disabled"
+        reportFilename: "../report.html",
+        openAnalyzer: true
+      }),
       new MiniCssExtractPlugin({
         filename: devMode ? "css/[name].css" : "css/[name].min.css?[contenthash]"
       }),
